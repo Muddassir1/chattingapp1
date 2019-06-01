@@ -1,1 +1,1 @@
-web: node server.js
+web: PORT=4444 node server.js
