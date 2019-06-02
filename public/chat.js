@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:'+process.env.PORT);
+var socket = io.connect('https://chattingapp1.herokuapp.com');
 
 socket.on('userConnected',function(data){
 	console.log(data);
