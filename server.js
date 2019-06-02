@@ -12,7 +12,7 @@ app.get("/", function(req,res){
 });
 
 var server = app.listen(process.env.PORT || 5000, function() {
-  console.log("Listening to port: ");
+  console.log("Listening to port: "+ process.env.PORT);
 });
 
 // Socket setup & pass server
