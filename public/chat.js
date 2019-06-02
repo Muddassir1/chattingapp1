@@ -76,13 +76,13 @@ function login() {
 	});
 }	
 
-	window.onbeforeunload = closingCode;
+	/*window.onbeforeunload = closingCode;
 	function closingCode(){
 		$.get("deleteuser.php?name="+form.username.value, function(data, status){
 			
 		});
 		return null;
-	}
+	} */
 
 function connectTo(data){
 	var id = data.socketid;
