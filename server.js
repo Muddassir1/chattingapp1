@@ -76,7 +76,7 @@ io.on('connection', (socket) => {
     	socket.broadcast.emit('userleft',socket.id);
     })
 */
-    socket.on('disconnect',function(){
+    /*socket.on('disconnect',function(){
     	console.log('someone disconnected');
     	io.clients((error, clients) => {
     		if (error) throw error;
@@ -84,5 +84,14 @@ io.on('connection', (socket) => {
     		console.log(clients);
     	});
     	socket.broadcast.emit('redial');
+    })*/
+
+    socket.on('closing',function(name){
+        console.log('he clcosed '+ name);
+        socket.broadcast.emit('startRedial',name);
+    })
+
+    socket.on('phoneCallEnded',function(){
+        io.sockets.emit('redial');
     })
 });

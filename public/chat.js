@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:5000');
+var socket = io.connect('https://chattingapp1.herokuapp.com');
 
 socket.on('userConnected',function(data){
 	console.log(data);
@@ -32,27 +32,29 @@ function login() {
 				$("#status").val('connected');
 				console.log(session);
 				session.connected(function(session) { 
-					var name = session.number;
+					name = session.number;
 					$('.ptext').html('<p>You are now connected to '+name+'</p>'); 
 					
 					//video_out.appendChild(session.video); showModal();
 				});
 				session.ended(function(session) { // User hangs up
 
-					console.log('hung up');
+					/*console.log('hung up');
 					search = true;
-					var name = session.number;
+					name = session.number;
 					$('.ptext').html('<p>'+name+' ended the session</p>');
 					$('.ptext').html('<p>Searching for users.</p>');
 
-					/*$.get("updateuser.php?name="+name+"&connected=0", function(data, status){ // Set idle to 0
-						console.log(data);
-					});*/
-					$("#status").val('idle');
+					$("#status").val('idle');*/
 				});
 				return false;
 			});
 
+			window.onbeforeunload = closingCode;
+			function closingCode(){
+				socket.emit('closing',name);
+				return null;
+			}
 
 			socket.on('searchuser',function(sender){ // someone is searrching for me
 				var status = $("#status").val();
@@ -76,13 +78,6 @@ function login() {
 	});
 }	
 
-	window.onbeforeunload = closingCode;
-	function closingCode(){
-		$.get("deleteuser.php?name="+form.username.value, function(data, status){
-			
-		});
-		return null;
-	}
 
 function connectTo(data){
 	var id = data.socketid;
@@ -113,6 +108,19 @@ socket.on('redial',function(){
 	username = $("#username").val();
 	if(search){
 		socket.emit('userConnected',username);
+	}
+})
+
+socket.on('startRedial',function(name){
+	console.log(name);
+	var myusername = $("#username").val();
+	if(name == myusername){
+		search = true;
+		$('.ptext').html('<p>'+name+' ended the session</p>');
+		$('.ptext').html('<p>Searching for users.</p>');
+
+		$("#status").val('idle');
+		socket.emit('phoneCallEnded');
 	}
 })
 
