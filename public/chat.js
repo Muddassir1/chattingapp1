@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:19635');
+var socket = io.connect('http://localhost:'+process.env.PORT);
 
 socket.on('userConnected',function(data){
 	console.log(data);
