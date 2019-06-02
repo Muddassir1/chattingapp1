@@ -85,4 +85,8 @@ io.on('connection', (socket) => {
     	});
     	socket.broadcast.emit('redial');
     })
+  
+  socket.on('closing',function(){
+    console.log('someone closed');
+  })
 });
