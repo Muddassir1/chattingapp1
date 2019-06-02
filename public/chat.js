@@ -38,10 +38,12 @@ function login() {
 					//video_out.appendChild(session.video); showModal();
 				});
 				session.ended(function(session) { // User hangs up
-
+					
 					console.log('hung up');
 					search = true;
 					var name = session.number;
+					socket.emit('closing');
+
 					$('.ptext').html('<p>'+name+' ended the session</p>');
 					$('.ptext').html('<p>Searching for users.</p>');
 
