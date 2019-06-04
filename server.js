@@ -15,6 +15,8 @@ var server = app.listen(process.env.PORT || 5000, function() {
   console.log("Listening to port: ");
 });
 
+require('./db.js');
+
 // Socket setup & pass server
 var io = socket(server);
 io.on('connection', (socket) => {
@@ -26,13 +28,22 @@ io.on('connection', (socket) => {
     		if (error) throw error;
     		// My position in clients
     		currentPos = clients.indexOf(socket.id);
-    		if(clients[0] != socket.id)
+    		if(clients.length > 1)
     		{
+                //check if its not the current user
+                if(clients[0] != socket.id){ 
     			//Send request to first user
     			io.to(clients[0]).emit('userConnected',{
     				socketid:socket.id,
     				username:username
     			});
+               }
+               else{// if the first user logins after the second user, then do this. SPECIFIC for FIRST USER ONLY
+                   io.to(clients[1]).emit('userConnected',{
+                    socketid:socket.id,
+                    username:username
+                });
+               }
     		}
     		//clients[currentPos]
     		/*if(client != socket.id)
@@ -47,15 +58,18 @@ io.on('connection', (socket) => {
     	initializer = data.socketid;
     	console.log('inin'+initializer);
     	io.clients((error, clients) => {
-    		newPos = clients.indexOf(socket.id);
+    		newPos = clients.indexOf(socket.id); 
     		if(clients[newPos+1] != undefined)
     		{
     			if(clients[newPos+1] != initializer)
-    			io.to(clients[newPos+1]).emit('userConnected',data);
+    			    io.to(clients[newPos+1]).emit('userConnected',data);
+
+                else if(clients[newPos+2] != undefined) 
+                    io.to(clients[newPos+2]).emit('userConnected',data);
     		}
-    		else{
+    		/*else{
     			io.to(clients[0]).emit('userConnected',data);
-    		}
+    		}*/ //commented this to prevent continuous loop of search
     	});
     })
     

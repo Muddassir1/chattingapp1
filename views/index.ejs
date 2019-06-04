@@ -54,6 +54,8 @@
 
         
 	</form>
+
+         <button id="hangup" onclick="hangupcall()">Disconnect</button>
     <button class="cbutton cbutton--effect-radomir md-trigger" value="Call" hidden="true" data-modal="modal-13" id="showModal"></button>
 	<div class="ptext">
         
@@ -88,5 +90,11 @@ var video_out = document.getElementById("vid-box");
 	ga('send', 'pageview');
 
 </script>
-
+<script type="text/javascript">
+    window.onload = function(){
+        alert('onbeforeunload' in window);
+alert(typeof window.onbeforeunload);
+alert(window.onbeforeunload);
+    }
+</script>
 </html>

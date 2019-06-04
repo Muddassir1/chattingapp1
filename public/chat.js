@@ -1,4 +1,5 @@
-var socket = io.connect('https://chattingapp1.herokuapp.com');
+//var socket = io.connect('https://chattingapp1.herokuapp.com');
+var socket = io.connect('http://localhost:5000');
 
 socket.on('userConnected',function(data){
 	console.log(data);
@@ -17,6 +18,7 @@ function login() {
 	});	
 	phone.ready(function(){
 
+			console.log(phone.number());
 			socket.emit('userConnected',username);
 			//form.login_submit.hidden="true";
 			//$('#call').show();
@@ -38,7 +40,7 @@ function login() {
 					//video_out.appendChild(session.video); showModal();
 				});
 				session.ended(function(session) { // User hangs up
-
+console.log('hung up');
 					/*console.log('hung up');
 					search = true;
 					name = session.number;
@@ -50,12 +52,7 @@ function login() {
 				return false;
 			});
 
-			window.onbeforeunload = closingCode;
-			function closingCode(){
-				socket.emit('closing',name);
-				return null;
-			}
-
+		
 			socket.on('searchuser',function(sender){ // someone is searrching for me
 				var status = $("#status").val();
 				if(status == 'idle' && typeof phone !== 'undefined'){
@@ -77,6 +74,19 @@ function login() {
 
 	});
 }	
+
+window.onbeforeunload = hangupcall;
+function hangupcall(){
+	if(typeof phone !== 'undefined'){
+		phone.hangup();
+		console.log('my num'+phone.number());
+		$('.ptext').html('<p>Searching for users</p>'); 
+		$("#status").val('idle');	
+	}
+
+	socket.emit('closing',name);
+	return null;
+}
 
 
 function connectTo(data){
