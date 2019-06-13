@@ -2,20 +2,68 @@
 var express = require('express');
 var app = express();
 var socket = require('socket.io');
+var session = require('express-session')
 
 app.set('view engine','ejs');
 app.set('views','./views');
 app.use(express.static('public'));
+app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: 'testsession',
+    resave: false,
+    saveUninitialized: true
+}))
 
 app.get("/", function(req,res){
-  res.render('index');
+    if(req.session.loggedin){
+        var client = require('./db')    
+        var getUser = require('./getUser')(req,res,client)
+    }
+    else{
+        res.render('index')
+    }
 });
+
+app.get('/membership',function(req,res){
+    res.render('membership')
+})
+
+app.get("/login", function(req,res){
+    res.render('login');
+});
+
+app.get("/register",function(req,res){
+    res.render('register');
+})
+
+app.post("/register",function(req,res){
+    var client = require('./db')
+    var createUser = require('./createUser')(req,res,client)
+})
+
+app.post("/login",function(req,res){
+    var client = require('./db')
+    var loginUser = require('./loginUser')(req,res,client)
+})
+
+//testing purpose for subscription
+app.get('/subscribe',function(req,res){
+    var payment = require('./payments')(req,res);
+})
+/*
+app.post('/payment-verify',function(req,res){
+    var paypalClient = require('./payment-verify');
+    console.log(paypalClient(req,res));
+    //paypalClient.handleRequest(req,res);
+
+})*/
 
 var server = app.listen(process.env.PORT || 5000, function() {
-  console.log("Listening to port: ");
+    console.log("Listening to port: ");
 });
 
-require('./db.js');
+//require('./db.js');
 
 // Socket setup & pass server
 var io = socket(server);
@@ -37,19 +85,19 @@ io.on('connection', (socket) => {
     				socketid:socket.id,
     				username:username
     			});
-               }
+            }
                else{// if the first user logins after the second user, then do this. SPECIFIC for FIRST USER ONLY
                    io.to(clients[1]).emit('userConnected',{
-                    socketid:socket.id,
-                    username:username
-                });
+                       socketid:socket.id,
+                       username:username
+                   });
                }
-    		}
+           }
     		//clients[currentPos]
     		/*if(client != socket.id)
-    			io.to(client).emit('userConnected',socket.id);*/
-    		console.log(clients);
-    	});
+            io.to(client).emit('userConnected',socket.id);*/
+            console.log(clients);
+        });
     	//socket.broadcast.emit('userConnected', socket.id);
     })
 
@@ -62,11 +110,11 @@ io.on('connection', (socket) => {
     		if(clients[newPos+1] != undefined)
     		{
     			if(clients[newPos+1] != initializer)
-    			    io.to(clients[newPos+1]).emit('userConnected',data);
+                    io.to(clients[newPos+1]).emit('userConnected',data);
 
                 else if(clients[newPos+2] != undefined) 
                     io.to(clients[newPos+2]).emit('userConnected',data);
-    		}
+            }
     		/*else{
     			io.to(clients[0]).emit('userConnected',data);
     		}*/ //commented this to prevent continuous loop of search
@@ -89,7 +137,7 @@ io.on('connection', (socket) => {
 
     	socket.broadcast.emit('userleft',socket.id);
     })
-*/
+    */
     /*socket.on('disconnect',function(){
     	console.log('someone disconnected');
     	io.clients((error, clients) => {

@@ -1,25 +1,16 @@
 const {Client} = require('pg')
+
 const client = new Client({
-    user: "ezyniorsnagogj",
-    password: "749930a4416f9f236796fc161005feb68ddab3d7b4717575bde1d426a6400fc7",
-    host: "ec2-50-19-114-27.compute-1.amazonaws.com",
-    port: 5432,
-    database: "dav2n1fo98igs8",
-    ssl: true
+	user: "zrnvnykmyrizqm",
+	password: "2d5fb2eebc45f1dcfa0c10b86ae87d9f570dc65963c807ecddfa110e2d3debf8",
+	host: "ec2-54-83-9-169.compute-1.amazonaws.com",
+	port: 5432,
+	database: "daskiiapem4hqj",
+	ssl: true
 })
 
 client.connect()
-.then(() => console.log("Connected successfuly"))
+.then(() => console.log("Connected successfuly"))	
 .catch(e => console.log(e))
 
-
-
-// callback
-var query = "SELECT * FROM users";
-client.query(query, (err, res) => {
-  if (err) {
-    console.log(err.stack)
-  } else {
-    console.log(res.rows[0])
-  }
-})
+module.exports = client;

@@ -9,14 +9,11 @@
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
     <script src="js/modernizr.custom.js"></script>
 	<link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" />
-	<script src="/chat.js"></script>
-
-
-    
+    <script src="/chat.js"></script>
 </head>
 <body>
 <div class = "bodyDiv">
-    
+
     <div class="md-modal md-effect-13" id="modal-13">
 			<div class="md-content">
 				<div>
@@ -30,20 +27,12 @@
     </div>
     <input type="hidden" id="status" value="idle">
     
-            <span class="input input--nao">
-                <input class="input__field input__field--nao" type="text" name="username" id="username" placeholder="Enter A Username"/>
-                        <label class="input__label input__label--nao" for="username">
-                            <span class="input__label-content input__label-content--nao">                                          
-                            </span>
-                        </label>
-                    <svg class="graphic graphic--nao" width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none">
-                        <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"/>
-                    </svg>
-            </span>
-            
-               <button class="cbutton cbutton--effect-radomir" type="submit" name="login_submit" value="Log In" style="margin-top: 40px; margin-left:-10px" onclick="errWrap(login);">
+               <!-- <button class="cbutton cbutton--effect-radomir" type="submit" name="login_submit" value="Log In" style="margin-top: 40px; margin-left:-10px" onclick="errWrap(login);">
 						<i class="cbutton__icon fa fa-fw fa fa-sign-in"></i>
-				</button>
+				</button> -->
+
+                <button>Random Call</button>
+                <a href="/membership">Female Call</button>
 
 	<form name="callForm" id="call" style="display: none" action="#" onsubmit="return errWrap(makeCall,this);">
         
@@ -89,12 +78,5 @@ var video_out = document.getElementById("vid-box");
 	ga('create', 'UA-46933211-3', 'auto');
 	ga('send', 'pageview');
 
-</script>
-<script type="text/javascript">
-    window.onload = function(){
-        alert('onbeforeunload' in window);
-alert(typeof window.onbeforeunload);
-alert(window.onbeforeunload);
-    }
 </script>
 </html>

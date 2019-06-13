@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Register</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->  
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+    
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="stylesheets/util.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/main.css">
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="vendor/bootstrap/js/popper.js"></script>
+
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!--===============================================================================================-->  
+</head>
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
+                <form class="login100-form validate-form" action="" method="post">
+                    <span class="login100-form-title p-b-33">
+                        Registration
+                    </span>
+
+                    <div class="wrap-input100 validate-input" data-validate = "Username is required">
+                        <input class="input100" type="text" name="username" placeholder="Username">
+                        <span class="focus-input100-1"></span>
+                        <span class="focus-input100-2"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                        <input class="input100" type="text" name="email" placeholder="Email">
+                        <span class="focus-input100-1"></span>
+                        <span class="focus-input100-2"></span>
+                    </div>
+
+                    <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
+                        <input class="input100" type="password" name="password" placeholder="Password">
+                        <span class="focus-input100-1"></span>
+                        <span class="focus-input100-2"></span>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 10px">
+                        <div class="input-group">
+                            <div id="radioBtn" class="btn-group">
+                                <a class="btn btn-primary btn-sm active" data-toggle="happy" data-title="male">Male</a>
+                                <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="female">Female</a>
+                            </div>
+                            <input type="hidden" name="gender" id="gender" value="male">
+                        </div>
+                    </div>
+
+                    <div class="container-login100-form-btn m-t-20">
+                        <button class="login100-form-btn">
+                            Sign Up
+                        </button>
+                    </div>
+
+                    <div class="text-center  p-t-45 p-b-4">
+                        <span class="txt1">
+                            Already have an account?
+                        </span>
+
+                        <a href="/login" class="txt2 hov1">
+                            Sign in
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+
+    <script type="text/javascript">
+        $('#radioBtn a').on('click', function(){
+            var sel = $(this).data('title');
+            var tog = $(this).data('toggle');
+            $('#'+tog).prop('value', sel);
+
+            $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+            $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+        })
+    </script>
+
+</body>
+</html>
