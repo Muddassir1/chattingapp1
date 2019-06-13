@@ -59,8 +59,8 @@ app.post('/payment-verify',function(req,res){
 
 })*/
 
-var server = app.listen(process.env.PORT || 5000, function() {
-    console.log("Listening to port: ");
+var server = app.listen(process.env.PORT, function() {
+    console.log("Listening to port: "+process.env.PORT);
 });
 
 //require('./db.js');
