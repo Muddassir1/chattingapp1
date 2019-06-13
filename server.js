@@ -21,7 +21,7 @@ app.get("/", function(req,res){
         var getUser = require('./getUser')(req,res,client)
     }
     else{
-        res.render('index')
+        res.redirect('/login')
     }
 });
 
@@ -50,6 +50,10 @@ app.post("/login",function(req,res){
 //testing purpose for subscription
 app.get('/subscribe',function(req,res){
     var payment = require('./payments')(req,res);
+})
+
+app.get('/payment-cancel',function(req,res){
+    console.log(req);
 })
 /*
 app.post('/payment-verify',function(req,res){

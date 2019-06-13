@@ -2,7 +2,7 @@
 module.exports = function(req,response,client){
 
 
-	const bcrypt = require('bcrypt');
+	const bcrypt = require('bcryptjs');
 
 	const email = req.body.email;
 	const password = req.body.password;

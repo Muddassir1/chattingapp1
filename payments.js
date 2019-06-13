@@ -26,8 +26,8 @@ var data = {
 			"payer_selected": "PAYPAL",
 			"payee_preferred": "IMMEDIATE_PAYMENT_REQUIRED"
 		},
-		"return_url": "https://example.com",
-		"cancel_url": "https://example.com/cancel"
+		"return_url": "https://localhost/payment-done",
+		"cancel_url": "https://localhost/payment-cancel"
 	}
 }
 
@@ -35,6 +35,7 @@ var data = {
 module.exports = function(req,res){
 	paypal.subscription.create(data,function (error, billingPlan) {
 		if (error) {
+			console.log(error.response)
 			throw error;
 		} else {
 			console.log("List Billing Plans Response");
