@@ -33,13 +33,26 @@ var data = {
 
 
 module.exports = function(req,res){
-	paypal.subscription.create(data,function (error, billingPlan) {
+
+	id = req.query.subscriptionID
+	//id="I-U0TXULKGSWT4"
+	paypal.subscription.get("I-D6BS299TPE47",function (error, billingPlan) {
 		if (error) {
-			console.log(error.response)
-			throw error;
+			res.send("There was an error processing your request")
 		} else {
-			console.log("List Billing Plans Response");
-			res.redirect(billingPlan.links[0].href);
+			client = require ('./db')
+			const email = req.session.email
+			console.log(email)
+			const query = "UPDATE users SET subscription_id=$1,subscription=true WHERE email = $2";
+			const values = [id,email];
+			client.query(query, values, (err, result) => {
+				if (err) {
+					console.log(err.stack)
+				} else {
+					res.redirect('./')
+				}
+			})
+			//res.redirect(billingPlan.links[0].href);
 		}
 	});
 }

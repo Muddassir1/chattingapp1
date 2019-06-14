@@ -2,7 +2,6 @@
 module.exports = function(req,response,client){
 
 	const bcrypt = require('bcryptjs');
-
 	const saltRounds = 10;
 	const username = req.body.username;
 	const email = req.body.email;
@@ -19,6 +18,7 @@ module.exports = function(req,response,client){
 				console.log(err)
 			} else {
 				req.session.loggedin = true;
+				req.session.email = email;
 				response.redirect('./')
 			}
 		})

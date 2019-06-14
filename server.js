@@ -63,7 +63,7 @@ app.post('/payment-verify',function(req,res){
 
 })*/
 
-var server = app.listen(process.env.PORT, function() {
+var server = app.listen(process.env.PORT || 80, function() {
     console.log("Listening to port: "+process.env.PORT);
 });
 

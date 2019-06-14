@@ -30,9 +30,13 @@
                <!-- <button class="cbutton cbutton--effect-radomir" type="submit" name="login_submit" value="Log In" style="margin-top: 40px; margin-left:-10px" onclick="errWrap(login);">
 						<i class="cbutton__icon fa fa-fw fa fa-sign-in"></i>
 				</button> -->
-
-                <button>Random Call</button>
-                <a href="/membership">Female Call</button>
+                <input type="hidden" id="username" value="<%= userData.username %>" />
+                <button onclick="errWrap(login)">Random Call</button>
+                <% if(userData.member){ %>
+                <button>Call <%= userData.oGender %></button>
+                <% } else{ %>
+                <a href="/membership"><%= userData.oGender %> Call</button>
+                <% } %>
 
 	<form name="callForm" id="call" style="display: none" action="#" onsubmit="return errWrap(makeCall,this);">
         

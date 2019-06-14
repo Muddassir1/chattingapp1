@@ -23,6 +23,9 @@ client.query(query, values, (err, res) => {
 				req.session.email = email;
 				response.redirect('./')
 			}
+			else{
+				response.render('login',{error: "Invalid Credentials"})
+			}
 		});
 	}
 	else{

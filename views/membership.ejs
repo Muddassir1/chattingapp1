@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 	<title>Membership</title>
-	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -10,7 +9,7 @@
 </head>
 
 <body>
-	<script src="https://www.paypal.com/sdk/js?client-id=AXXX3nR0hSm-hC3eMNakMGLUDV-Wa6LOjpAq5Jk3SQov_7lVeAWnQRRcmAQ0Q7CZdi8qlFgoLxK9LNdv&vault=true" />
+	<script src="https://www.paypal.com/sdk/js?client-id=AXXX3nR0hSm-hC3eMNakMGLUDV-Wa6LOjpAq5Jk3SQov_7lVeAWnQRRcmAQ0Q7CZdi8qlFgoLxK9LNdv&vault=true"></script>
 	<p>You have to subscribe to our membership area to access this feature</p>
 	<a href="subscribe">Subscribe!</a>
 
@@ -23,14 +22,15 @@
 
 				return actions.subscription.create({
 
-					'plan_id': 'P-85G20577UY138270KLT7L33I'
+					'plan_id': 'P-85G20577UY138270KLT7L33I',
+					"auto_renewal": true
 
 				});
 
 			},
 
 			onApprove: function(data, actions) {
-				alert('You have successfully created subscription ' + data.subscriptionID);
+				window.location.href = "/subscribe?id="+data.subscriptionID;
 			}
 
 
