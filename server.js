@@ -181,13 +181,14 @@ io.on('connection', (socket) => {
     function getClientsForMember(clients,gender){
 
         oppositeGender = gender=="male"?"female":"male";
-        var newClients = clients.filter(i => io.sockets.connected[i].gender == oppositeGender);
-        /*clients.forEach(function(value,index){
+        //var newClients = clients.filter(i => io.sockets.connected[i].gender == oppositeGender);
+        clients.forEach(function(value,index){
             if(io.sockets.connected[value].gender != oppositeGender){
-                newClients = newClients.filter(i => i != );
+                //newClients = newClients.filter(i => i != );
+                delete clients[index]
             }
-        })*/
-        return newClients;
+        })
+        return clients;
     }
 
 });
