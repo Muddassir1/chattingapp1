@@ -31,9 +31,11 @@
 						<i class="cbutton__icon fa fa-fw fa fa-sign-in"></i>
 				</button> -->
                 <input type="hidden" id="username" value="<%= userData.username %>" />
-                <button onclick="errWrap(login)">Random Call</button>
+                <input type="hidden" id="gender" value="<%= userData.gender %>" />
+                <input type="hidden" id="member" value="" />
+                <button onclick="errWrap(login,false)">Random Call</button>
                 <% if(userData.member){ %>
-                <button>Call <%= userData.oGender %></button>
+                <button onclick="errWrap(login,true)">Call <%= userData.oGender %></button>
                 <% } else{ %>
                 <a href="/membership"><%= userData.oGender %> Call</button>
                 <% } %>

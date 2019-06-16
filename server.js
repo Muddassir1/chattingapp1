@@ -55,13 +55,7 @@ app.get('/subscribe',function(req,res){
 app.get('/payment-cancel',function(req,res){
     console.log(req);
 })
-/*
-app.post('/payment-verify',function(req,res){
-    var paypalClient = require('./payment-verify');
-    console.log(paypalClient(req,res));
-    //paypalClient.handleRequest(req,res);
 
-})*/
 
 var server = app.listen(process.env.PORT || 80, function() {
     console.log("Listening to port: "+process.env.PORT);
@@ -75,25 +69,42 @@ io.on('connection', (socket) => {
 
     console.log('made socket connection', socket.id);
 
-    socket.on('userConnected',function(username){
-    	io.clients((error, clients) => {
-    		if (error) throw error;
+    socket.on('userConnected',function(data){
+        username = data.username;
+        socket.gender = data.gender; //Attach gender to the user's socket
+        socket.member = data.member    // User has special call or random
+
+        io.clients((error, clients) => {
+            if (error) throw error;
     		// My position in clients
     		currentPos = clients.indexOf(socket.id);
-    		if(clients.length > 1)
-    		{
+
+             // Adding condition for members
+             if(socket.member){
+
+                // Get gender specific users
+                clients = getClientsForMember(clients,socket.gender);
+                console.log('members' + clients);
+            }
+            if(clients.length > 1)
+            {
                 //check if its not the current user
-                if(clients[0] != socket.id){ 
+                if(clients[0] != socket.id){
+
     			//Send request to first user
     			io.to(clients[0]).emit('userConnected',{
     				socketid:socket.id,
-    				username:username
-    			});
+    				username:username,
+                    gender:socket.gender,
+                    member:socket.member
+                });
             }
                else{// if the first user logins after the second user, then do this. SPECIFIC for FIRST USER ONLY
                    io.to(clients[1]).emit('userConnected',{
                        socketid:socket.id,
-                       username:username
+                       username:username,
+                       gender:socket.gender,
+                       member:socket.member
                    });
                }
            }
@@ -106,14 +117,20 @@ io.on('connection', (socket) => {
     })
 
     socket.on('checkAnotherUser',function(data){
-    	console.log(data);
     	initializer = data.socketid;
-    	console.log('inin'+initializer);
-    	io.clients((error, clients) => {
-    		newPos = clients.indexOf(socket.id); 
-    		if(clients[newPos+1] != undefined)
-    		{
-    			if(clients[newPos+1] != initializer)
+        console.log('inin'+initializer);
+        io.clients((error, clients) => {
+             // Adding condition for members
+             if(data.member){
+
+                // Get gender specific users
+                clients = getClientsForMember(clients,data.gender);
+                console.log('membersafter checking ' + clients);
+            }
+            newPos = clients.indexOf(socket.id); 
+            if(clients[newPos+1] != undefined)
+            {
+                if(clients[newPos+1] != initializer)
                     io.to(clients[newPos+1]).emit('userConnected',data);
 
                 else if(clients[newPos+2] != undefined) 
@@ -160,4 +177,18 @@ io.on('connection', (socket) => {
     socket.on('phoneCallEnded',function(){
         io.sockets.emit('redial');
     })
+
+    function getClientsForMember(clients,gender){
+
+        oppositeGender = gender=="male"?"female":"male";
+        var newClients = clients.filter(i => io.sockets.connected[i].gender == oppositeGender);
+        /*clients.forEach(function(value,index){
+            if(io.sockets.connected[value].gender != oppositeGender){
+                newClients = newClients.filter(i => i != );
+            }
+        })*/
+        return newClients;
+    }
+
 });
+

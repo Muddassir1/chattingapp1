@@ -1,14 +1,18 @@
-var socket = io.connect('https://chattingapp1.herokuapp.com');
-//var socket = io.connect('http://localhost:5000');
+//var socket = io.connect('https://chattingapp1.herokuapp.com');
+var socket = io.connect('http://localhost');
 
 socket.on('userConnected',function(data){
 	console.log(data);
 	connectTo(data);
 })
 search = true;
-function login() {
+function login(member) {
+
 	var username = $("#username").val();
-	console.log(username);
+	var gender = $("#gender").val();
+	var separate = member?true:false;
+	$("#member").val(member?"1":"0");
+
 	$('.ptext').html('<p>Attempting to login.</p>');
 
 	var phone = window.phone = PHONE({
@@ -18,8 +22,7 @@ function login() {
 	});	
 	phone.ready(function(){
 
-			console.log(phone.number());
-			socket.emit('userConnected',username);
+			socket.emit('userConnected',{username:username,gender:gender,member:separate});
 			//form.login_submit.hidden="true";
 			//$('#call').show();
 			$('.ptext').html('<p>Logged in successfully.</p>');
@@ -92,17 +95,30 @@ function hangupcall(){
 function connectTo(data){
 	var id = data.socketid;
 	var username = data.username;
+	var gender = data.gender;
 	var status = $("#status").val();
+	var member = $("#member").val();
+	var mygender = $("#gender").val();
+
 	if(status == 'idle' && typeof phone !== 'undefined'){
-		phone.dial(username);
-		$('.ptext').html('<p>Connecting to '+username+'</p>');
+		if(member == "1"){
+			// If i'm subscribed to specific call, check the gender of the caller
+			if(gender == mygender){
+				socket.emit('checkAnotherUser',data);
+			}
+			else{
+				phone.dial(username);
+				$('.ptext').html('<p>Connecting to '+username+'</p>');
+			}
+		}
+		else{
+			phone.dial(username);
+			$('.ptext').html('<p>Connecting to '+username+'</p>');
+		}
 	}
 	else{
 	// if this user is not available to connect, then iterate the loop in the server side
-	socket.emit('checkAnotherUser',{
-		socketid: id,
-		username: username
-	});
+	socket.emit('checkAnotherUser',data);
 	}
 }
 
@@ -116,8 +132,12 @@ function searchUser(){
 socket.on('redial',function(){
 	// This event fires when the user has lost call with someone
 	username = $("#username").val();
+	gender = $("#gender").val();
+	separate = $("#member").val();
+	member = separate=="1"?true:false;
+
 	if(search){
-		socket.emit('userConnected',username);
+		socket.emit('userConnected',{username:username,gender:gender,member:member});
 	}
 })
 
@@ -149,9 +169,9 @@ function makeCall(form){
 	}
 	return false;
 }
-function errWrap(fxn){
+function errWrap(fxn,params){
 	try {
-		return fxn();
+		return fxn(params);
 	} catch(err) {
 		console.log(err);
 		//alert("WebRTC is currently only supported by Chrome, Opera, and Firefox");
