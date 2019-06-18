@@ -1,5 +1,5 @@
-//var socket = io.connect('https://chattingapp1.herokuapp.com');
-var socket = io.connect('http://localhost');
+var socket = io.connect('https://chattingapp1.herokuapp.com');
+//var socket = io.connect('http://localhost');
 
 socket.on('userConnected',function(data){
 	console.log(data);
